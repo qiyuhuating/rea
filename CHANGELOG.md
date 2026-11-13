@@ -1,5 +1,56 @@
 # Changelog
 
+## [6.10.0](https://github.com/morluto/rea/compare/rea-agents-6.9.0...rea-agents-6.10.0) (2026-11-13)
+
+
+### Features
+
+* **setup:** expose explicit MCP catalog profile selection ([#9354](https://github.com/morluto/rea/issues/9354)) ([edc9304](https://github.com/morluto/rea/commit/edc93046692c120567553fb68390db6ec5bc98c7))
+
+
+### Bug Fixes
+
+* **analysis:** iterate admitted inventories without call spreads ([#10304](https://github.com/morluto/rea/issues/10304)) ([c2ca381](https://github.com/morluto/rea/commit/c2ca3819e51239da08d8dd36ac1905db4ab4bb26))
+* **android:** enforce DEX array dimension limit ([#10227](https://github.com/morluto/rea/issues/10227)) ([966bde3](https://github.com/morluto/rea/commit/966bde37806d1d16a7028037da264f33065c65d0))
+* **android:** preserve SDK-gated manifest permissions ([#10236](https://github.com/morluto/rea/issues/10236)) ([4d15b7f](https://github.com/morluto/rea/commit/4d15b7f50957e0870ddd05fbdf794b3bb1e45cfa))
+* **apple:** expand loaded siblings along the first dyld chain ([#10248](https://github.com/morluto/rea/issues/10248)) ([9d32836](https://github.com/morluto/rea/commit/9d32836d371718260a9fcd1118f2e635cc1005e6))
+* **browser:** bound cached responses with zero-padded lengths ([#10237](https://github.com/morluto/rea/issues/10237)) ([0084810](https://github.com/morluto/rea/commit/0084810ef704c6c70e25cdeedcca95d622ffcd16))
+* **captures:** retain preparation cleanup owners ([#10288](https://github.com/morluto/rea/issues/10288)) ([9c86465](https://github.com/morluto/rea/commit/9c86465d47e98306e1ee1f77e7fb25d1d737b1db))
+* **ci:** defer proposals for merged release commits ([5eef239](https://github.com/morluto/rea/commit/5eef239dfd774331d622aaa4762f42fa632121ab))
+* **ci:** settle cancelled test-group descendants ([#10229](https://github.com/morluto/rea/issues/10229)) ([070cfce](https://github.com/morluto/rea/commit/070cfce443f803c22f9b958c2f6e85a23b288241))
+* **contracts:** drop nested defaults from a root union sibling ([#10254](https://github.com/morluto/rea/issues/10254)) ([7559e06](https://github.com/morluto/rea/commit/7559e06740368363e7270ffcfbb8d3d5d641fe25))
+* **desktop:** expand ELF origin paths as literal directory names ([c19d319](https://github.com/morluto/rea/commit/c19d319929cedb74f9d50138c415919197ef3acd))
+* **desktop:** preserve literal directories in ELF origin expansion ([#10215](https://github.com/morluto/rea/issues/10215)) ([c19d319](https://github.com/morluto/rea/commit/c19d319929cedb74f9d50138c415919197ef3acd))
+* **desktop:** preserve multiline apt-config locations ([#10241](https://github.com/morluto/rea/issues/10241)) ([0f5ac9d](https://github.com/morluto/rea/commit/0f5ac9d5f3d750e017456fa5e9b9f955f497a8b1))
+* **desktop:** preserve Unicode separators in entry values ([#10210](https://github.com/morluto/rea/issues/10210)) ([594d739](https://github.com/morluto/rea/commit/594d73985c9d631e52ad644848fe825d5dffa119))
+* **desktop:** retain dconf failures without stderr ([#10230](https://github.com/morluto/rea/issues/10230)) ([913b029](https://github.com/morluto/rea/commit/913b029c9607421271b0203acf7084d129491623))
+* **desktop:** validate guest file replies at their shared boundary ([#10224](https://github.com/morluto/rea/issues/10224)) ([50d4f7b](https://github.com/morluto/rea/commit/50d4f7bea42d171a839e1dd76d191209816da4de))
+* **go:** validate string extents before budget admission ([#10231](https://github.com/morluto/rea/issues/10231)) ([feca30c](https://github.com/morluto/rea/commit/feca30c72cfc0355fb3a2652be09aefd6b9ed8da))
+* **mcp:** record deferred schemas before protocol framing ([#9351](https://github.com/morluto/rea/issues/9351)) ([bed3f0b](https://github.com/morluto/rea/commit/bed3f0bcb5518bd8e086d95f5a9bab3bd064c096))
+* **navigation:** offer available instruction observations ([#10307](https://github.com/morluto/rea/issues/10307)) ([15a2de7](https://github.com/morluto/rea/commit/15a2de737c3401f9ef1e22290fa1b8a1ac3fead9))
+* **pcap:** disclose truncated DNS responses as partial ([#10214](https://github.com/morluto/rea/issues/10214)) ([0c01517](https://github.com/morluto/rea/commit/0c01517cc0330cebaaa194d270aa4b0923105b6c))
+* **pe:** enforce DER extension critical encoding ([#10212](https://github.com/morluto/rea/issues/10212)) ([937d10d](https://github.com/morluto/rea/commit/937d10df1c709c8b2f5af8d9406ef735d0b3a2dc))
+* **release:** honor selected npm in update verification ([#10240](https://github.com/morluto/rea/issues/10240)) ([418e3f5](https://github.com/morluto/rea/commit/418e3f5e91f43d05412935aa36db7e4f61b3f6ff))
+* **release:** validate notes with the publication parser ([653c494](https://github.com/morluto/rea/commit/653c49419e65515d5567ebf13c0e6dd2ac794f7e))
+* **setup:** supply registration profile in catalog test ([a8527d4](https://github.com/morluto/rea/commit/a8527d43b8439476f5c9d1497315dfe7dd5e1f38))
+* **test:** resolve filesystem aliases before planning prerequisites ([#10213](https://github.com/morluto/rea/issues/10213)) ([7c9d65f](https://github.com/morluto/rea/commit/7c9d65fe973c7d2a9e04985ba4e0dcc63ada9a8b))
+* **tests:** restore worker fixture and allow setup completion ([6878a84](https://github.com/morluto/rea/commit/6878a847965ab63311c3a3fe82d6e83f15fab0fa))
+* **verify:** check Android readiness repair guidance ([#10242](https://github.com/morluto/rea/issues/10242)) ([54906fd](https://github.com/morluto/rea/commit/54906fdb1fc735b507961b2954f6968775cae4f6))
+* **verify:** keep adopted resources live until command owner closes ([#10314](https://github.com/morluto/rea/issues/10314)) ([5cddc69](https://github.com/morluto/rea/commit/5cddc69c51a0fb18d021417199046314581ba9c2))
+* **verify:** retain Go fixtures until owned cleanup completes ([#10309](https://github.com/morluto/rea/issues/10309)) ([b2c4635](https://github.com/morluto/rea/commit/b2c4635a364c712a20962d700405f17398e790d5))
+
+
+### Code Refactoring
+
+* consolidate shared analysis boundaries ([#10293](https://github.com/morluto/rea/issues/10293)) ([c836f57](https://github.com/morluto/rea/commit/c836f57b7d72e6843c160e32afd6f7e14be70fdf))
+* prune test-only seams and obsolete helpers ([#10275](https://github.com/morluto/rea/issues/10275)) ([02ebd3e](https://github.com/morluto/rea/commit/02ebd3e02da3971701c0c61ef787bacd7595f9a8))
+* remove legacy seams and consolidate resource ownership ([#10349](https://github.com/morluto/rea/issues/10349)) ([bbe2bcc](https://github.com/morluto/rea/commit/bbe2bcc979be747698d9ad9ce87af017b92e0f10))
+
+
+### Tests
+
+* **native:** cover deadlines throughout signature inspection ([#10217](https://github.com/morluto/rea/issues/10217)) ([bfecbb1](https://github.com/morluto/rea/commit/bfecbb1d480ab9a2c8e7545cdfa04f022f050bcc))
+
 ## [6.9.0](https://github.com/morluto/rea/compare/rea-agents-6.8.0...rea-agents-6.9.0) (2026-11-11)
 
 ### Highlights
