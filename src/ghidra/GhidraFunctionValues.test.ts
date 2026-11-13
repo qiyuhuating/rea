@@ -1323,3 +1323,104 @@ describe("Ghidra native facet coordinate admission", () => {
     },
   );
 });
+
+it("adds only verified high-p-code control flow facts to a Ghidra dossier", () => {
+  const original = ghidraFunctionDossier();
+  if (!original || typeof original !== "object" || Array.isArray(original))
+    throw new TypeError("Dossier fixture missing");
+  const oldFlow = original.native_value_flow;
+  if (!oldFlow || typeof oldFlow !== "object" || Array.isArray(oldFlow))
+    throw new TypeError("P-code fixture missing");
+  const literal = (constant_hex: string, size_bytes = 8) => ({
+    kind: "constant",
+    size_bytes,
+    location: null,
+    constant_hex,
+  });
+  const operation = (
+    id: string,
+    opcode: string,
+    address: string,
+    inputs: unknown[],
+    output: unknown = null,
+  ) => ({
+    id,
+    address,
+    sequence: Number(id.split("#")[1]),
+    opcode,
+    is_dead: false,
+    block_membership: "member",
+    inputs,
+    output,
+  });
+  const operations = [
+    operation("0x401000#0", "CBRANCH", "0x401000", [
+      literal("40100a"),
+      literal("0", 1),
+    ]),
+    operation("0x401005#0", "CBRANCH", "0x401005", [
+      literal("40100a"),
+      {
+        kind: "register",
+        size_bytes: 1,
+        location: "register:0x10",
+        constant_hex: null,
+      },
+    ]),
+    operation("0x401007#0", "BRANCHIND", "0x401007", [literal("40100a")]),
+    operation("0x40100a#0", "COPY", "0x40100a", [literal("1")], {
+      kind: "unique",
+      size_bytes: 8,
+      location: "unique:0x30",
+      constant_hex: null,
+    }),
+  ];
+  const raw = {
+    ...original,
+    native_value_flow: {
+      ...oldFlow,
+      operations,
+      def_use: [],
+      effects: [],
+      parameter_uses: [],
+      truncated: false,
+      omitted_operations_lower_bound: 0,
+      known_omitted_inputs: 0,
+      known_omitted_edges: 0,
+    },
+  };
+  const result = parseFunctionValueFixture(
+    "analyze_function",
+    jsonValueSchema.parse(raw),
+  );
+  expect(result).toMatchObject({
+    ok: true,
+    value: {
+      native_value_flow: {
+        control_flow_proofs: {
+          inspected_conditional_branches: 2,
+          proven_conditions: [
+            {
+              operation: "0x401000#0",
+              address: "0x401000",
+              outcome: "fallthrough",
+              constant_hex: "0",
+            },
+          ],
+          unknown_conditional_branches: 1,
+          inspected_indirect_branches: 1,
+          resolved_indirect_targets: [
+            {
+              operation: "0x401007#0",
+              address: "0x401007",
+              target_address: "0x40100a",
+            },
+          ],
+        },
+      },
+      basic_blocks: original.basic_blocks,
+      pseudocode: original.pseudocode,
+    },
+  });
+  expect(JSON.stringify(raw)).not.toContain("control_flow_proofs");
+});

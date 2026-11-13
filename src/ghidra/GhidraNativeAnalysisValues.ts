@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { provePcodeControlFlow } from "../domain/native/provenPcodeControlFlow.js";
 import { nativeAddressObservationSchema } from "../domain/native/nativeAddress.js";
 import {
   availableNativeApiBoundarySchema,
@@ -50,38 +51,46 @@ const ghidraPcodeOperation = nativePcodeOperationSchema.extend({
 });
 
 /** Validate relationships only after each p-code observation has been admitted. */
-export const ghidraNativeValueFlow = z.discriminatedUnion("available", [
-  unavailableNativeValueFlowSchema,
-  availableNativeValueFlowSchema
-    .extend({ operations: z.array(ghidraPcodeOperation) })
-    .superRefine((value, context) => {
-      const { operations } = value;
-      const operationIds = new Set(operations.map(({ id }) => id));
-      if (operationIds.size !== operations.length)
-        context.addIssue({
-          code: "custom",
-          message: "Ghidra p-code operation identifiers are not unique",
-        });
-      if (
-        value.def_use.some(
-          ({ definition, use }) =>
-            !operationIds.has(definition) || !operationIds.has(use),
-        ) ||
-        value.effects.some(({ operation }) => !operationIds.has(operation))
-      )
-        context.addIssue({
-          code: "custom",
-          message: "Ghidra p-code relationship references a missing operation",
-        });
-      if (
-        value.truncated !==
-        (value.omitted_operations_lower_bound > 0 ||
-          value.known_omitted_inputs > 0 ||
-          value.known_omitted_edges > 0)
-      )
-        context.addIssue({
-          code: "custom",
-          message: "Ghidra p-code truncation flag contradicts omitted counts",
-        });
-    }),
-]);
+export const ghidraNativeValueFlow = z
+  .discriminatedUnion("available", [
+    unavailableNativeValueFlowSchema,
+    availableNativeValueFlowSchema
+      .omit({ control_flow_proofs: true })
+      .extend({ operations: z.array(ghidraPcodeOperation) })
+      .superRefine((value, context) => {
+        const { operations } = value;
+        const operationIds = new Set(operations.map(({ id }) => id));
+        if (operationIds.size !== operations.length)
+          context.addIssue({
+            code: "custom",
+            message: "Ghidra p-code operation identifiers are not unique",
+          });
+        if (
+          value.def_use.some(
+            ({ definition, use }) =>
+              !operationIds.has(definition) || !operationIds.has(use),
+          ) ||
+          value.effects.some(({ operation }) => !operationIds.has(operation))
+        )
+          context.addIssue({
+            code: "custom",
+            message:
+              "Ghidra p-code relationship references a missing operation",
+          });
+        if (
+          value.truncated !==
+          (value.omitted_operations_lower_bound > 0 ||
+            value.known_omitted_inputs > 0 ||
+            value.known_omitted_edges > 0)
+        )
+          context.addIssue({
+            code: "custom",
+            message: "Ghidra p-code truncation flag contradicts omitted counts",
+          });
+      }),
+  ])
+  .transform((value) =>
+    value.available
+      ? { ...value, control_flow_proofs: provePcodeControlFlow(value) }
+      : value,
+  );

@@ -57,6 +57,38 @@ export const nativeValueFlowLimitsSchema = z.strictObject({
 });
 export type NativeValueFlowLimits = z.infer<typeof nativeValueFlowLimitsSchema>;
 
+/** Only proven high-p-code outcomes; unknown branches are never removed. */
+export const nativeControlFlowProofSchema = z.strictObject({
+  analysis: z.literal("bounded-high-pcode-ssa-v1"),
+  max_steps: z.int().positive(),
+  evaluated_operations: z.int().nonnegative(),
+  budget_exhausted: z.boolean(),
+  inspected_conditional_branches: z.int().nonnegative(),
+  inspected_indirect_branches: z.int().nonnegative(),
+  proven_conditions: z.array(
+    z.strictObject({
+      operation: z.string().min(1),
+      address: z.string().min(1),
+      outcome: z.enum(["taken", "fallthrough"]),
+      proof: z.enum(["exact", "known-bits"]),
+      constant_hex: z
+        .string()
+        .regex(/^[0-9a-f]+$/u)
+        .nullable(),
+    }),
+  ),
+  resolved_indirect_targets: z.array(
+    z.strictObject({
+      operation: z.string().min(1),
+      address: z.string().min(1),
+      target_address: z.string().min(1),
+    }),
+  ),
+  unknown_conditional_branches: z.int().nonnegative(),
+  unknown_indirect_branches: z.int().nonnegative(),
+  limitations: z.array(z.string().min(1)),
+});
+
 /** Bounded data-flow observations; STORE is not necessarily a persistent/global write. */
 export const availableNativeValueFlowSchema = z.strictObject({
   available: z.literal(true),
@@ -67,6 +99,7 @@ export const availableNativeValueFlowSchema = z.strictObject({
     .exactOptional(),
   operations: z.array(nativePcodeOperationSchema),
   def_use: z.array(nativePcodeDefUseSchema),
+  control_flow_proofs: nativeControlFlowProofSchema.exactOptional(),
   effects: z
     .array(nativePcodeEffectSchema)
     .describe(

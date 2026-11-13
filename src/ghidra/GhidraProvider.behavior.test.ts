@@ -1454,7 +1454,7 @@ describe("Ghidra client projection", () => {
       compiler_spec_id: "auto-default",
       call_relationship_coverage: "observed-call-inventory-and-discovery-v7",
       function_dossier_coverage: "observed-facets-and-call-relationships-v1",
-      native_value_flow_projection: "accepted-runtime-budgets-v1",
+      native_value_flow_projection: "accepted-runtime-budgets-proof-v2",
     });
 
     const result = await ghidra

@@ -120,6 +120,16 @@ parameter-use collections. New function dossiers are reobserved rather than
 replayed from snapshots; completed Evidence remains available for historical
 inspection. Other observation caches keep their existing policy.
 
+`native_value_flow.control_flow_proofs` is a read-only derivation from retained
+HighFunction SSA p-code. A 4,096-operation budget and 32-level recursion bound
+limit constant/known-bit propagation. `proven_conditions` distinguishes exact
+values from known-bit proofs; an unknown constant remains `null` rather than a
+fabricated value. `resolved_indirect_targets` requires an exact instruction
+address in the same retained HighFunction and address space. Each result counts
+unproven branches separately. The original CFG edges, unresolved paths and
+provider pseudocode are **not rewritten**. These proofs assume Ghidra's lifted
+p-code semantics and do not establish independent equivalence to machine code.
+
 `ghidra.decompile_max_payload_mib` controls the native decompiler's response
 payload, separately from p-code projection and decompile time. Its launch seed
 is `REA_GHIDRA_DECOMPILE_MAX_PAYLOAD_MIB`; explicit values are 1..2047 MiB to
